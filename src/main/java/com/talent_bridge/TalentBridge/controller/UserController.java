@@ -3,10 +3,13 @@ import com.talent_bridge.TalentBridge.DTO.LoginDTO;
 import com.talent_bridge.TalentBridge.DTO.LoginResponseDTO;
 import com.talent_bridge.TalentBridge.DTO.UserDTO;
 import com.talent_bridge.TalentBridge.entity.User;
+import com.talent_bridge.TalentBridge.enums.Role;
 import com.talent_bridge.TalentBridge.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
@@ -15,7 +18,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
     @PostMapping(value = "/create", consumes = {"multipart/form-data"})
     public ResponseEntity<String> createUser(
             @RequestPart("resume") MultipartFile resume,
@@ -25,6 +27,7 @@ public class UserController {
             @RequestPart("phone") String phone,
             @RequestPart("address") String address,
             @RequestPart("role") String role,
+            @RequestPart(value = "companyName", required = false) String companyName,
             @RequestPart("password") String password,
             @RequestPart("confirmPassword") String confirmPassword
     ) {
@@ -36,6 +39,7 @@ public class UserController {
         dto.setPhone(phone);
         dto.setAddress(address);
         dto.setRole(role);
+        dto.setCompanyName(companyName);
         dto.setPassword(password);
         dto.setConfirmPassword(confirmPassword);
 
@@ -52,7 +56,6 @@ public class UserController {
             return ResponseEntity.badRequest().body("Invalid or expired activation token.");
         }
     }
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
@@ -64,5 +67,40 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        try {
+            User user = userService.getUserById(id);
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching user: " + e.getMessage());
+        }
+    }
 
+    @GetMapping("/count/employers")
+    public ResponseEntity<Long> countEmployers() {
+        long count = userService.countByRole(Role.EMPLOYER);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/count/employees")
+    public ResponseEntity<Long> countEmployees() {
+        long count = userService.countByRole(Role.EMPLOYEE);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/employers")
+    public ResponseEntity<List<User>> getAllEmployers() {
+        List<User> employers = userService.getAllEmployers();
+        return ResponseEntity.ok(employers);
+    }
+    @GetMapping("/employees")
+    public ResponseEntity<List<User>> getAllEmployees() {
+        List<User> employers = userService.getAllEmployees();
+        return ResponseEntity.ok(employers);
+    }
 }

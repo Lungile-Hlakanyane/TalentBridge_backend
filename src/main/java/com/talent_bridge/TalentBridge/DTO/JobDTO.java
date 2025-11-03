@@ -2,7 +2,6 @@ package com.talent_bridge.TalentBridge.DTO;
 import java.time.LocalDateTime;
 
 public class JobDTO {
-
     private Long id;
     private String title;
     private String company;
@@ -12,9 +11,15 @@ public class JobDTO {
     private String description;
     private Long userId;
     private LocalDateTime created;
+
+    // ✅ New fields
+    private boolean approve;
+    private String status;
+
     public JobDTO() {}
 
-    public JobDTO(Long id, String title, String company, String location, String type, String salary, String description, Long userId, LocalDateTime created) {
+    public JobDTO(Long id, String title, String company, String location, String type, String salary,
+                  String description, Long userId, LocalDateTime created, boolean approve, String status) {
         this.id = id;
         this.title = title;
         this.company = company;
@@ -24,26 +29,41 @@ public class JobDTO {
         this.description = description;
         this.userId = userId;
         this.created = created;
+        this.approve = approve;
+        this.status = status;
     }
 
-    // Getters & Setters
+    // ✅ Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
+
     public String getCompany() { return company; }
     public void setCompany(String company) { this.company = company; }
+
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
+
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
+
     public String getSalary() { return salary; }
     public void setSalary(String salary) { this.salary = salary; }
+
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
-    public LocalDateTime getCreated() {return created;}
-    public void setCreated(LocalDateTime created) {this.created = created;}
+
+    public LocalDateTime getCreated() { return created; }
+    public void setCreated(LocalDateTime created) { this.created = created; }
+
+    public boolean isApprove() { return approve; }
+    public void setApprove(boolean approve) { this.approve = approve; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

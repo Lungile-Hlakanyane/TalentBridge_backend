@@ -13,6 +13,8 @@ public class UserDTO {
     private String role;
     private String password;
     private String confirmPassword;
+    private String companyName;
+
     public UserDTO() {
     }
 
@@ -22,6 +24,14 @@ public class UserDTO {
 
     public void setResume(MultipartFile resume) {
         this.resume = resume;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getName() {

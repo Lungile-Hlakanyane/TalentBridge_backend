@@ -9,4 +9,5 @@ public interface JobService {
     List<JobDTO> getJobsByUserId(Long userId);
     JobDTO updateJob(Long id, JobDTO jobDTO);
     void deleteJob(Long id);
+    JobDTO changeApprovalStatus(Long id, boolean approve, String status);
 }

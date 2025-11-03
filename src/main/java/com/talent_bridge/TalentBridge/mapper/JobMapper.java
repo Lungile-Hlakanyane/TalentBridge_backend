@@ -16,14 +16,15 @@ public class JobMapper {
                 job.getSalary(),
                 job.getDescription(),
                 job.getUserId(),
-                job.getCreated()
+                job.getCreated(),
+                job.isApprove(),
+                job.getStatus()
         );
     }
 
     public static Job toEntity(JobDTO jobDTO) {
         if (jobDTO == null) return null;
-
-        return new Job(
+        Job job = new Job(
                 jobDTO.getId(),
                 jobDTO.getTitle(),
                 jobDTO.getCompany(),
@@ -34,5 +35,8 @@ public class JobMapper {
                 jobDTO.getUserId(),
                 jobDTO.getCreated()
         );
+        job.setApprove(jobDTO.isApprove());
+        job.setStatus(jobDTO.getStatus());
+        return job;
     }
 }

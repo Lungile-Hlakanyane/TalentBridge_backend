@@ -54,10 +54,24 @@ public class JobServiceImp implements JobService {
         existing.setDescription(jobDTO.getDescription());
         existing.setUserId(jobDTO.getUserId());
         Job updated = jobRepository.save(existing);
+
+        existing.setApprove(jobDTO.isApprove());
+        existing.setStatus(jobDTO.getStatus());
+
         return JobMapper.toDTO(updated);
     }
     @Override
     public void deleteJob(Long id) {
         jobRepository.deleteById(id);
+    }
+
+    @Override
+    public JobDTO changeApprovalStatus(Long id, boolean approve, String status) {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job not found with id " + id));
+        job.setApprove(approve);
+        job.setStatus(status);
+        Job updated = jobRepository.save(job);
+        return JobMapper.toDTO(updated);
     }
 }

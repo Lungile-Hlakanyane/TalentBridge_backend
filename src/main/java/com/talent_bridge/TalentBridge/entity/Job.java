@@ -1,6 +1,5 @@
 package com.talent_bridge.TalentBridge.entity;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,6 +17,9 @@ public class Job {
     private String description;
     private Long userId;
     private LocalDateTime created;
+
+    private boolean approve = false;
+    private String status = "pending";
     public Job() {}
 
     public Job(Long id, String title, String company, String location, String type, String salary, String description, Long userId, LocalDateTime created) {
@@ -30,6 +32,21 @@ public class Job {
         this.description = description;
         this.userId = userId;
         this.created = created;
+    }
+    public boolean isApprove() {
+        return approve;
+    }
+    public void setApprove(boolean approve) {
+        this.approve = approve;
+        this.status = approve ? "approved" : "declined";
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     // Getters & Setters
@@ -55,5 +72,6 @@ public class Job {
     @PrePersist
     protected void onCreate() {
         this.created = LocalDateTime.now();
+        if (this.status == null) this.status = "pending";
     }
 }

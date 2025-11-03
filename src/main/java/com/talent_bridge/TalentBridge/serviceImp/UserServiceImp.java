@@ -2,6 +2,7 @@ package com.talent_bridge.TalentBridge.serviceImp;
 import com.talent_bridge.TalentBridge.DTO.LoginDTO;
 import com.talent_bridge.TalentBridge.DTO.UserDTO;
 import com.talent_bridge.TalentBridge.entity.User;
+import com.talent_bridge.TalentBridge.enums.Role;
 import com.talent_bridge.TalentBridge.mapper.UserMapper;
 import com.talent_bridge.TalentBridge.repository.UserRepository;
 import com.talent_bridge.TalentBridge.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,6 +67,26 @@ public class UserServiceImp implements UserService {
         return user;
     }
 
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+    }
+
+    @Override
+    public long countByRole(Role role) {
+        return userRepository.countByRole(role);
+    }
+
+    @Override
+    public List<User> getAllEmployers() {
+        return userRepository.findByRole(Role.EMPLOYER);
+    }
+
+    @Override
+    public List<User> getAllEmployees() {
+        return userRepository.findByRole(Role.EMPLOYEE);
+    }
 
     private void sendActivationEmail(String email, String token) {
         String activationLink = "http://localhost:8080/api/users/activate?token=" + token;
