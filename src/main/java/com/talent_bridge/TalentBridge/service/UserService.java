@@ -3,7 +3,6 @@ import com.talent_bridge.TalentBridge.DTO.LoginDTO;
 import com.talent_bridge.TalentBridge.DTO.UserDTO;
 import com.talent_bridge.TalentBridge.entity.User;
 import com.talent_bridge.TalentBridge.enums.Role;
-
 import java.util.List;
 
 public interface UserService {
@@ -14,4 +13,5 @@ public interface UserService {
     long countByRole(Role role);
     List<User> getAllEmployers();
     List<User> getAllEmployees();
+    public byte[] getResumeFile(Long userId);
 }

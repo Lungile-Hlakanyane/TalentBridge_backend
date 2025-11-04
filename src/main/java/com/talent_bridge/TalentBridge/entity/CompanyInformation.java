@@ -10,9 +10,15 @@ public class CompanyInformation {
     private String companyDescription;
     private String taxNumber;
     private String registeredAddress;
-    private String registrationDocument;
-    private String taxClearanceDocument;
-    private String leaseAgreement;
+    @Lob
+    @Column(name = "registration_document", columnDefinition = "MEDIUMBLOB")
+    private byte[] registrationDocument;
+    @Lob
+    @Column(name = "tax_clearance_document", columnDefinition = "MEDIUMBLOB")
+    private byte[] taxClearanceDocument;
+    @Lob
+    @Column(name = "lease_agreement", columnDefinition = "MEDIUMBLOB")
+    private byte[] leaseAgreement;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -27,12 +33,27 @@ public class CompanyInformation {
     public void setTaxNumber(String taxNumber) { this.taxNumber = taxNumber; }
     public String getRegisteredAddress() { return registeredAddress; }
     public void setRegisteredAddress(String registeredAddress) { this.registeredAddress = registeredAddress; }
-    public String getRegistrationDocument() { return registrationDocument; }
-    public void setRegistrationDocument(String registrationDocument) { this.registrationDocument = registrationDocument; }
-    public String getTaxClearanceDocument() { return taxClearanceDocument; }
-    public void setTaxClearanceDocument(String taxClearanceDocument) { this.taxClearanceDocument = taxClearanceDocument; }
-    public String getLeaseAgreement() { return leaseAgreement; }
-    public void setLeaseAgreement(String leaseAgreement) { this.leaseAgreement = leaseAgreement; }
+    public byte[] getRegistrationDocument() {
+        return registrationDocument;
+    }
+    public void setRegistrationDocument(byte[] registrationDocument) {
+        this.registrationDocument = registrationDocument;
+    }
+    public byte[] getTaxClearanceDocument() {
+        return taxClearanceDocument;
+    }
+
+    public void setTaxClearanceDocument(byte[] taxClearanceDocument) {
+        this.taxClearanceDocument = taxClearanceDocument;
+    }
+
+    public byte[] getLeaseAgreement() {
+        return leaseAgreement;
+    }
+
+    public void setLeaseAgreement(byte[] leaseAgreement) {
+        this.leaseAgreement = leaseAgreement;
+    }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }

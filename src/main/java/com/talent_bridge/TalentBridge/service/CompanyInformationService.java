@@ -7,4 +7,5 @@ public interface CompanyInformationService {
     CompanyInformationDTO getCompanyInfoByUserId(Long userId);
     List<CompanyInformationDTO> getAllCompanyInfos();
     void deleteCompanyInfo(Long id);
+    CompanyInformationDTO updateCompanyInfo(Long userId, CompanyInformationDTO updatedInfo);
 }

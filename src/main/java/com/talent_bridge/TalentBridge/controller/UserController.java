@@ -5,6 +5,8 @@ import com.talent_bridge.TalentBridge.DTO.UserDTO;
 import com.talent_bridge.TalentBridge.entity.User;
 import com.talent_bridge.TalentBridge.enums.Role;
 import com.talent_bridge.TalentBridge.service.UserService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +22,7 @@ public class UserController {
     }
     @PostMapping(value = "/create", consumes = {"multipart/form-data"})
     public ResponseEntity<String> createUser(
-            @RequestPart("resume") MultipartFile resume,
+            @RequestPart( value="resume", required= false) MultipartFile resume,
             @RequestPart("name") String name,
             @RequestPart("surname") String surname,
             @RequestPart("email") String email,
@@ -103,4 +105,14 @@ public class UserController {
         List<User> employers = userService.getAllEmployees();
         return ResponseEntity.ok(employers);
     }
+
+    @GetMapping("/download-resume/{userId}")
+    public ResponseEntity<byte[]> downloadResume(@PathVariable Long userId) {
+        byte[] resumeData = userService.getResumeFile(userId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=resume.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resumeData);
+    }
+
 }

@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 @Service
 public class CompanyInformationServiceImpl implements CompanyInformationService {
 
+    private final CompanyInformationMapper companyInformationMapper;
     private final CompanyInformationRepository companyInfoRepo;
     private final UserRepository userRepo;
 
-    public CompanyInformationServiceImpl(CompanyInformationRepository companyInfoRepo, UserRepository userRepo) {
+    public CompanyInformationServiceImpl(CompanyInformationMapper companyInformationMapper, CompanyInformationRepository companyInfoRepo, UserRepository userRepo) {
+        this.companyInformationMapper = companyInformationMapper;
         this.companyInfoRepo = companyInfoRepo;
         this.userRepo = userRepo;
     }
@@ -46,5 +48,28 @@ public class CompanyInformationServiceImpl implements CompanyInformationService 
     @Override
     public void deleteCompanyInfo(Long id) {
         companyInfoRepo.deleteById(id);
+    }
+
+    @Override
+    public CompanyInformationDTO updateCompanyInfo(Long userId, CompanyInformationDTO updatedInfo) {
+        CompanyInformation existing = companyInfoRepo.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Company information not found for user ID: " + userId));
+
+        // Update only fields provided
+        existing.setCompanyDescription(updatedInfo.getCompanyDescription());
+        existing.setTaxNumber(updatedInfo.getTaxNumber());
+        existing.setRegisteredAddress(updatedInfo.getRegisteredAddress());
+
+        if (updatedInfo.getRegistrationDocument() != null) {
+            existing.setRegistrationDocument(updatedInfo.getRegistrationDocument());
+        }
+        if (updatedInfo.getTaxClearanceDocument() != null) {
+            existing.setTaxClearanceDocument(updatedInfo.getTaxClearanceDocument());
+        }
+        if (updatedInfo.getLeaseAgreement() != null) {
+            existing.setLeaseAgreement(updatedInfo.getLeaseAgreement());
+        }
+        CompanyInformation saved = companyInfoRepo.save(existing);
+        return CompanyInformationMapper.toDTO(saved);
     }
 }

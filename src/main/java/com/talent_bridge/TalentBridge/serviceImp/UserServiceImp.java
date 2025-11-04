@@ -88,6 +88,13 @@ public class UserServiceImp implements UserService {
         return userRepository.findByRole(Role.EMPLOYEE);
     }
 
+    @Override
+    public byte[] getResumeFile(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getResumePath().getBytes();
+    }
+
     private void sendActivationEmail(String email, String token) {
         String activationLink = "http://localhost:8080/api/users/activate?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();

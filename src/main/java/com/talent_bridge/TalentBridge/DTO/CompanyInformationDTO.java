@@ -6,9 +6,9 @@ public class CompanyInformationDTO {
     private String companyDescription;
     private String taxNumber;
     private String registeredAddress;
-    private String registrationDocument;
-    private String taxClearanceDocument;
-    private String leaseAgreement;
+    private byte[] registrationDocument;
+    private byte[] taxClearanceDocument;
+    private byte[] leaseAgreement;
     private Long userId;
 
     // --- Getters and Setters ---
@@ -24,14 +24,29 @@ public class CompanyInformationDTO {
     public String getRegisteredAddress() { return registeredAddress; }
     public void setRegisteredAddress(String registeredAddress) { this.registeredAddress = registeredAddress; }
 
-    public String getRegistrationDocument() { return registrationDocument; }
-    public void setRegistrationDocument(String registrationDocument) { this.registrationDocument = registrationDocument; }
+    public byte[] getRegistrationDocument() {
+        return registrationDocument;
+    }
 
-    public String getTaxClearanceDocument() { return taxClearanceDocument; }
-    public void setTaxClearanceDocument(String taxClearanceDocument) { this.taxClearanceDocument = taxClearanceDocument; }
+    public void setRegistrationDocument(byte[] registrationDocument) {
+        this.registrationDocument = registrationDocument;
+    }
 
-    public String getLeaseAgreement() { return leaseAgreement; }
-    public void setLeaseAgreement(String leaseAgreement) { this.leaseAgreement = leaseAgreement; }
+    public byte[] getTaxClearanceDocument() {
+        return taxClearanceDocument;
+    }
+
+    public void setTaxClearanceDocument(byte[] taxClearanceDocument) {
+        this.taxClearanceDocument = taxClearanceDocument;
+    }
+
+    public byte[] getLeaseAgreement() {
+        return leaseAgreement;
+    }
+
+    public void setLeaseAgreement(byte[] leaseAgreement) {
+        this.leaseAgreement = leaseAgreement;
+    }
 
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
