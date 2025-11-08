@@ -11,16 +11,18 @@ public class JobApplicationMapper {
         application.setApplicantName(dto.getApplicantName());
         application.setApplicantEmail(dto.getApplicantEmail());
         application.setCoverLetter(dto.getCoverLetter());
+        application.setApplicantEmail(dto.getApplicantEmail());
+        application.setApplicantName(dto.getApplicantName());
         application.setResumePath(dto.getResumePath());
         return application;
     }
     public JobApplicationDTO toDTO(JobApplication entity) {
-        return new JobApplicationDTO(
-                entity.getJobId(),
-                entity.getApplicantName(),
-                entity.getApplicantEmail(),
-                entity.getCoverLetter(),
-                entity.getResumePath()
-        );
+        JobApplicationDTO dto = new JobApplicationDTO();
+        dto.setJobId(entity.getJobId());
+        dto.setApplicantName(entity.getApplicantName());
+        dto.setApplicantEmail(entity.getApplicantEmail());
+        dto.setCoverLetter(entity.getCoverLetter());
+        dto.setResumePath(entity.getResumePath());
+        return dto;
     }
 }

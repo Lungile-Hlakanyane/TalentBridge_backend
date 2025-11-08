@@ -10,8 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/users")
@@ -113,6 +113,53 @@ public class UserController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=resume.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(resumeData);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+        try {
+            userService.initiatePasswordReset(email);
+            return ResponseEntity.ok("Password reset code sent to email.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/verify-reset-code")
+    public ResponseEntity<String> verifyResetCode(@RequestParam String email,
+                                                  @RequestParam String code) {
+        boolean valid = userService.verifyResetCode(email, code);
+        if (valid) {
+            return ResponseEntity.ok("Code verified successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid or expired code.");
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam String email,
+                                                @RequestParam String code,
+                                                @RequestParam String newPassword) {
+        try {
+            userService.resetPassword(email, code, newPassword);
+            return ResponseEntity.ok("Password successfully reset.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/by-email")
+    public ResponseEntity<?> getUserByEmail(@RequestParam String email) {
+        try {
+            Optional<User> user = userService.getUserByEmail(email);
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching user: " + e.getMessage());
+        }
     }
 
 }

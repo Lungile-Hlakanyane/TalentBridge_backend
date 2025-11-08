@@ -16,6 +16,11 @@ public class User {
     private String email;
     private String phone;
     private String address;
+    @Column(name = "reset_code")
+    private String resetCode;
+
+    @Column(name = "reset_code_expiry")
+    private LocalDateTime resetCodeExpiry;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -31,7 +36,13 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String resumePath, String name, String surname, String companyName, String email, String phone, String address, Role role, String password, boolean activated, String activationToken, LocalDateTime tokenExpiry) {
+    public User(Long id, String resumePath, String name, String surname,
+                String companyName, String email, String phone, String address,
+                Role role, String password, boolean activated, String activationToken,
+                LocalDateTime tokenExpiry,
+                String resetCode,
+                LocalDateTime resetCodeExpiry
+                ) {
         this.id = id;
         this.resumePath = resumePath;
         this.name = name;
@@ -45,7 +56,26 @@ public class User {
         this.activationToken = activationToken;
         this.tokenExpiry = tokenExpiry;
         this.companyName = companyName;
+        this.resetCode = resetCode;
+        this.resetCodeExpiry = resetCodeExpiry;
     }
+
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
+    }
+
+    public LocalDateTime getResetCodeExpiry() {
+        return resetCodeExpiry;
+    }
+
+    public void setResetCodeExpiry(LocalDateTime resetCodeExpiry) {
+        this.resetCodeExpiry = resetCodeExpiry;
+    }
+
     public String getCompanyName() {
         return companyName;
     }

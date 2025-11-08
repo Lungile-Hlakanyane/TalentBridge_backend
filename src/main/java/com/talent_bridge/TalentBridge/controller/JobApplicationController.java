@@ -6,6 +6,7 @@ import com.talent_bridge.TalentBridge.service.JobApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -19,9 +20,18 @@ public class JobApplicationController {
     }
 
     @PostMapping("/apply")
-    public ResponseEntity<JobApplication> applyForJob(@RequestBody JobApplicationDTO dto) {
-        JobApplication saved = service.applyForJob(dto);
-        return ResponseEntity.ok(saved);
+    public JobApplication applyForJob(@RequestBody JobApplicationDTO dto) {
+        JobApplication jobApp = new JobApplication();
+
+        // ✅ Ensure all fields (including jobId) are mapped
+        jobApp.setJobId(dto.getJobId());
+        jobApp.setApplicantName(dto.getApplicantName());
+        jobApp.setApplicantEmail(dto.getApplicantEmail());
+        jobApp.setCoverLetter(dto.getCoverLetter());
+        jobApp.setResumePath(dto.getResumePath());
+        jobApp.setAppliedAt(LocalDateTime.now());
+
+        return jobApplicationRepository.save(jobApp);
     }
     @GetMapping("/job/{jobId}")
     public ResponseEntity<List<JobApplication>> getApplicationsForJob(@PathVariable Long jobId) {
@@ -37,4 +47,10 @@ public class JobApplicationController {
     public long getApplicationCount(){
         return this.jobApplicationRepository.count();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<JobApplicationDTO> getApplicationById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getApplicationById(id));
+    }
+
 }

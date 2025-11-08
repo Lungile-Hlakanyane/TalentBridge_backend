@@ -95,6 +95,47 @@ public class UserServiceImp implements UserService {
         return user.getResumePath().getBytes();
     }
 
+    @Override
+    public void initiatePasswordReset(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        String code = String.format("%06d", (int) (Math.random() * 1000000));
+        user.setResetCode(code);
+        user.setResetCodeExpiry(LocalDateTime.now().plusMinutes(15));
+        userRepository.save(user);
+        sendResetCodeEmail(email, code);
+    }
+
+    @Override
+    public boolean verifyResetCode(String email, String code) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        if (user.getResetCode() == null || !user.getResetCode().equals(code)) {
+            return false;
+        }
+        if (user.getResetCodeExpiry().isBefore(LocalDateTime.now())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void resetPassword(String email, String code, String newPassword) {
+        if (!verifyResetCode(email, code)) {
+            throw new RuntimeException("Invalid or expired reset code");
+        }
+        User user = userRepository.findByEmail(email).get();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetCode(null);
+        user.setResetCodeExpiry(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     private void sendActivationEmail(String email, String token) {
         String activationLink = "http://localhost:8080/api/users/activate?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
@@ -102,6 +143,14 @@ public class UserServiceImp implements UserService {
         message.setSubject("TalentBridge Account Activation");
         message.setText("Welcome to TalentBridge!\n\nPlease click the link below to activate your account:\n"
                 + activationLink + "\n\nThis link expires in 24 hours.");
+        mailSender.send(message);
+    }
+
+    private void sendResetCodeEmail(String email, String code) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("TalentBridge Password Reset Code");
+        message.setText("Your password reset code is: " + code + "\nThis code is valid for 15 minutes.");
         mailSender.send(message);
     }
 }

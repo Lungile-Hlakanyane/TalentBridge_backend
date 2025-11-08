@@ -2,6 +2,8 @@ package com.talent_bridge.TalentBridge.DTO;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 @Data
 public class UserDTO {
     private MultipartFile resume;
@@ -14,6 +16,22 @@ public class UserDTO {
     private String password;
     private String confirmPassword;
     private String companyName;
+    private String resetCode;
+    private LocalDateTime resetCodeExpiry;
+    public String getResetCode() {
+        return resetCode;
+    }
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
+    }
+
+    public LocalDateTime getResetCodeExpiry() {
+        return resetCodeExpiry;
+    }
+
+    public void setResetCodeExpiry(LocalDateTime resetCodeExpiry) {
+        this.resetCodeExpiry = resetCodeExpiry;
+    }
 
     public UserDTO() {
     }

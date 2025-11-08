@@ -17,7 +17,8 @@ public class Job {
     private String description;
     private Long userId;
     private LocalDateTime created;
-
+    private String jobTitle;
+    private String applicantName;
     private boolean approve = false;
     private String status = "pending";
     public Job() {}

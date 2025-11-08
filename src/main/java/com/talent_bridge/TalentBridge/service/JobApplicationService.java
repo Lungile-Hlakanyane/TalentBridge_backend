@@ -7,4 +7,5 @@ public interface JobApplicationService {
     JobApplication applyForJob(JobApplicationDTO dto);
     List<JobApplication> getApplicationsForJob(Long jobId);
     List<JobApplication> getApplicationsForUser(String email);
+    JobApplicationDTO getApplicationById(Long id);
 }

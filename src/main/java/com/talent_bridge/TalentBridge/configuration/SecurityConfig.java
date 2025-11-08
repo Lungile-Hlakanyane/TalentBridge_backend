@@ -30,8 +30,11 @@ public class SecurityConfig {
                                 "/api/applications/**",
                                 "/api/announcements/**",
                                 "/api/users/employers/**",
-                                "/api/company-info/**"
-                                ).permitAll()
+                                "/api/company-info/**",
+                                "/api/chat/**",
+                                "/api/invites/**",
+                                "/uploads/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 );
 

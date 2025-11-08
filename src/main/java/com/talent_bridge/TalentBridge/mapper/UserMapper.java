@@ -20,7 +20,9 @@ public class UserMapper {
         user.setPassword(hashedPassword);
         user.setActivated(false);
         user.setActivationToken(token);
-        user.setTokenExpiry(LocalDateTime.now().plusDays(1)); // token valid for 24h
+        user.setResetCode(dto.getResetCode());
+        user.setResetCodeExpiry(dto.getResetCodeExpiry());
+        user.setTokenExpiry(LocalDateTime.now().plusDays(1));
         return user;
     }
 }

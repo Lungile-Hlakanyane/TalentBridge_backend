@@ -4,6 +4,7 @@ import com.talent_bridge.TalentBridge.DTO.UserDTO;
 import com.talent_bridge.TalentBridge.entity.User;
 import com.talent_bridge.TalentBridge.enums.Role;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     void createUser(UserDTO dto);
@@ -14,4 +15,8 @@ public interface UserService {
     List<User> getAllEmployers();
     List<User> getAllEmployees();
     public byte[] getResumeFile(Long userId);
+    void initiatePasswordReset(String email);
+    boolean verifyResetCode(String email, String code);
+    void resetPassword(String email, String code, String newPassword);
+    Optional<User> getUserByEmail(String email);
 }
