@@ -136,6 +136,27 @@ public class UserServiceImp implements UserService {
         return userRepository.findByEmail(email);
     }
 
+    @Override
+    public void updateOnlineStatus(Long userId, boolean online) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setOnline(online);
+        userRepository.save(user);
+    }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUserById(Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            userRepository.delete(userOpt.get());
+        } else {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+    }
+
     private void sendActivationEmail(String email, String token) {
         String activationLink = "http://localhost:8080/api/users/activate?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();

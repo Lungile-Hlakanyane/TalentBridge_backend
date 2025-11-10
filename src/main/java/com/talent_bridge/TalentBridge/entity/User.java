@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 @Table( name = "users")
 @Entity
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,19 +17,16 @@ public class User {
     private String address;
     @Column(name = "reset_code")
     private String resetCode;
-
+    @Column(nullable = false)
+    private Boolean online = false;
     @Column(name = "reset_code_expiry")
     private LocalDateTime resetCodeExpiry;
-
     @Enumerated(EnumType.STRING)
     private Role role;
-
     private String password;
-
     private boolean activated = false;
     private String activationToken;
     private LocalDateTime tokenExpiry;
-
     private String companyName;
 
     public User() {
@@ -41,7 +37,8 @@ public class User {
                 Role role, String password, boolean activated, String activationToken,
                 LocalDateTime tokenExpiry,
                 String resetCode,
-                LocalDateTime resetCodeExpiry
+                LocalDateTime resetCodeExpiry,
+                Boolean online
                 ) {
         this.id = id;
         this.resumePath = resumePath;
@@ -58,6 +55,23 @@ public class User {
         this.companyName = companyName;
         this.resetCode = resetCode;
         this.resetCodeExpiry = resetCodeExpiry;
+        this.online = online;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public Boolean getOnline() {
+        return online;
+    }
+
+    public void setOnline(Boolean online) {
+        this.online = online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 
     public String getResetCode() {

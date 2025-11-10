@@ -33,7 +33,8 @@ public class SecurityConfig {
                                 "/api/company-info/**",
                                 "/api/chat/**",
                                 "/api/invites/**",
-                                "/uploads/**"
+                                "/uploads/**",
+                                "/api/resume/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );

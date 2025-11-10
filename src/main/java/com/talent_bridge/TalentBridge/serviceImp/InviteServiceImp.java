@@ -4,8 +4,6 @@ import com.talent_bridge.TalentBridge.entity.Invite;
 import com.talent_bridge.TalentBridge.repository.InviteRepository;
 import com.talent_bridge.TalentBridge.service.InviteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,5 +32,11 @@ public class InviteServiceImp implements InviteService {
         Invite invite = inviteRepository.findById(inviteId).orElseThrow();
         invite.setStatus(status);
         inviteRepository.save(invite);
+    }
+
+    @Override
+    public String getInviteStatus(Long senderId, Long receiverId) {
+        return inviteRepository.findInviteStatus(senderId, receiverId)
+                .orElse("NONE"); // NONE means no invite exists yet
     }
 }

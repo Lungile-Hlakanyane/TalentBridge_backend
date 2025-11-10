@@ -161,5 +161,20 @@ public class UserController {
             return ResponseEntity.badRequest().body("Error fetching user: " + e.getMessage());
         }
     }
+    @GetMapping("/status/all")
+    public ResponseEntity<List<User>> getAllUsersStatus() {
+        List<User> users = userService.getAllUsers(); // include the online field
+        return ResponseEntity.ok(users);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        try{
+            userService.deleteUserById(id);
+            return ResponseEntity.ok("User account deleted successfully");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error deleting account: "+ e.getMessage());
+        }
+    }
 
 }

@@ -5,7 +5,6 @@ import com.talent_bridge.TalentBridge.repository.JobApplicationRepository;
 import com.talent_bridge.TalentBridge.service.JobApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
